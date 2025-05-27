@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   db:
@@ -6,10 +6,10 @@ services:
     container_name: mariadb-container
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: taskdb
-      MYSQL_USER: devuser
-      MYSQL_PASSWORD: devpass
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3306:3306"
     networks:
@@ -20,7 +20,7 @@ services:
     container_name: task-manager-node
     restart: always
     ports:
-      - "5002:5001"  # host:container
+      - "5002:5001" # host:container
     env_file:
       - .env
     volumes:

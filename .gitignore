@@ -8,6 +8,8 @@ yarn-error.log
 .env
 .env.local
 .env.*.local
+*.env
+!env.example
 
 # IDE
 .idea/
@@ -18,6 +20,19 @@ yarn-error.log
 # OS
 .DS_Store
 Thumbs.db
+
+# Project specific
+INTERVIEW_QUESTIONS.md
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
 
 # Project specific
 INTERVIEW_QUESTIONS.md 
