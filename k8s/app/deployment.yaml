@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-manager-api     # Name of the Node.js app deployment
+  namespace: task-manager    # Namespace where deployment will be created
+  labels:
+    app: task-manager-api   # Label to identify this deployment
+spec:
+  replicas: 1               # Number of pod replicas to maintain
+  selector:
+    matchLabels:
+      app: task-manager-api # Label selector to match pods
+  template:
+    metadata:
+      labels:
+        app: task-manager-api  # Labels to be applied to the pods
+    spec:
+      containers:
+      - name: task-manager-api  # Container name
+        image: task-manager-api:latest  # Node.js app container image
+        ports:
+        - containerPort: 5002   # Port the app listens on
+        envFrom:
+        - configMapRef:         # Load all environment variables from ConfigMap
+            name: task-manager-config
+        env:
+        - name: DB_PASSWORD    # Database password from Secret
+          valueFrom:
+            secretKeyRef:      # Reference to secret for password
+              name: db-credentials
+              key: DB_PASSWORD
+        args: ["-c", "password_encryption=md5"]  # Additional container arguments
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m" 

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb              # Name of the MariaDB deployment
+  namespace: task-manager    # Namespace where deployment will be created
+  labels:
+    app: mariadb            # Label to identify this deployment
+spec:
+  replicas: 1               # Number of pod replicas to maintain
+  selector:
+    matchLabels:
+      app: mariadb          # Label selector to match pods
+  template:
+    metadata:
+      labels:
+        app: mariadb        # Labels to be applied to the pods
+    spec:
+      containers:
+      - name: mariadb       # Container name
+        image: mariadb:latest  # MariaDB container image
+        ports:
+        - containerPort: 3306  # Default MySQL/MariaDB port
+        env:
+        - name: MYSQL_ROOT_PASSWORD  # Root user password
+          valueFrom:
+            secretKeyRef:          # Reference to secret for password
+              name: mariadb-credentials
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_DATABASE     # Database to be created
+          value: "taskdb"
+        - name: MYSQL_USER        # User to be created
+          value: "devuser"
+        - name: MYSQL_PASSWORD    # User password
+          valueFrom:
+            secretKeyRef:         # Reference to secret for password
+              name: mariadb-credentials
+              key: MYSQL_PASSWORD
+        volumeMounts:
+        - name: mariadb-data      # Name of the volume to mount
+          mountPath: /var/lib/mysql  # Default data path for MariaDB
+      volumes:
+      - name: mariadb-data        # Volume name
+        persistentVolumeClaim:    # PVC to use for persistent storage
+          claimName: mariadb-pvc  # Name of the PVC to use

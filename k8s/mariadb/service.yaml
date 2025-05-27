@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: db                    # Service name (matches DB_HOST in app config)
+  namespace: task-manager     # Namespace where service will be created
+  labels:
+    app: mariadb             # Label to identify this service
+    name: mariadb-service    # Additional label for service identification
+spec:
+  selector:
+    app: mariadb            # Label selector to match pods
+  ports:
+    - protocol: TCP         # Protocol to use
+      port: 3306           # Port the service listens on
+      targetPort: 3306     # Port the container listens on
+  type: ClusterIP          # Service type for internal cluster access

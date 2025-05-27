@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: task-manager-api-service  # Name of the service
+  namespace: task-manager         # Namespace where service will be created
+  labels:
+    app: task-manager-api        # Label to identify this service
+    name: task-manager-service   # Additional label for service identification
+spec:
+  selector:
+    app: task-manager-api       # Label selector to match pods
+  ports:
+    - protocol: TCP             # Protocol to use
+      port: 5002               # Port the service listens on
+      targetPort: 5002         # Port the container listens on
+  type: ClusterIP              # Service type for internal cluster access 

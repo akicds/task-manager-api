@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: task-manager          # Namespace name for our application
+  labels:
+    name: task-manager        # Label for namespace identification
+    environment: development  # Environment label for resource management 
